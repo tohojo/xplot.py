@@ -120,7 +120,7 @@ def plot_xplot(filename):
 
     # Draw the markers
     for (c,m),(x,y) in markers.items():
-        ax.plot(x,y,ls="",marker=m,markeredgecolor=c,markerfacecolor='none',markersize=4)
+        ax.plot(x,y,ls="",marker=m,markeredgecolor=COLOURS[c],markerfacecolor='none',markersize=4)
     ax.autoscale_view()
     pyplot.show()
 
