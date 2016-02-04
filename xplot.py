@@ -23,7 +23,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import sys
 import matplotlib
-matplotlib.use("Qt4Agg")
 from matplotlib import pyplot, markers
 from matplotlib.lines import Line2D
 from matplotlib.transforms import Affine2D
@@ -134,4 +133,7 @@ def plot_xplot(filename):
     pyplot.show()
 
 if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        sys.stderr.write("Usage: xplot.py <filename>.xpl\n")
+        sys.exit(1)
     plot_xplot(sys.argv[1])
