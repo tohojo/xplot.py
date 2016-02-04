@@ -106,12 +106,15 @@ def plot_xplot(filename):
             if parts[0] == "rtext":
                 # We translate the 'rtext' to have the text be to the right
                 # instead of above. Values are simply arrived at by trial and
-                # error.
+                # error, and probably only aligns right with the single-digit
+                # annotations in time sequence graphs.
                 trans = Affine2D.identity().translate(6,-8)
                 kwargs['transform']=ax.transData+trans
+                kwargs['ha'] = 'left'
             elif parts[0] == "ltext":
                 trans = Affine2D.identity().translate(-6,-8)
                 kwargs['transform']=ax.transData+trans
+                kwargs['ha'] = 'right'
             t = ax.text(x,y,text,**kwargs)
 
         # Markers are specified as 'marker x y'
