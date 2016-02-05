@@ -69,6 +69,24 @@ def plot_xplot(filename):
         else:
             markers[k] = ([x],[y])
 
+    # Similarly as for makers, we keep lines mapped by colour and try to combine
+    # them if we have several line segments that share points
+    lines = {}
+    def add_line(col,parts):
+        x1,y1,x2,y2 = map(float, parts[1:])
+        if not col in lines:
+            lines[col] = [([x1,x2],[y1,y2])]
+        else:
+            found = False
+            for l in lines[col][-5:]:
+                if l[0][-1] == x1 and l[1][-1] == y1:
+                    l[0].append(x2)
+                    l[1].append(y2)
+                    found = True
+                    break
+            if not found:
+                lines[col].append(([x1,x2],[y1,y2]))
+
     # Parse the xplot command lines
     for line in fp:
         line = line.strip()
@@ -92,7 +110,7 @@ def plot_xplot(filename):
         # Lines are defined as 'line x1 y1 x2 y2'
         elif parts[0] == "line":
             x1,y1,x2,y2 = map(float, parts[1:])
-            ax.add_line(Line2D([x1,x2],[y1,y2],c=COLOURS[col],lw=1))
+            add_line(col,parts)
 
         # Text above or to the right specifies coordinates with the string on
         # the next line
@@ -126,6 +144,10 @@ def plot_xplot(filename):
         else:
             print("Unknown: %s" % line)
 
+    # Draw the lines
+    for c,ll in lines.items():
+        for x,y in ll:
+            ax.plot(x,y,lw=1,c=COLOURS[c])
     # Draw the markers
     for (c,m),(x,y) in markers.items():
         ax.plot(x,y,ls="",marker=m,markeredgecolor=COLOURS[c],markerfacecolor='none',markersize=4)

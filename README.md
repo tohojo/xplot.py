@@ -10,7 +10,7 @@ exporting features.
 
 Only tested on Python 3.5 and matplotlib 1.5. May eat your children;
 will definitely eat your RAM (a 600 second time sequence diagram eats
-~1.5 GB of RAM).
+~800 MB of RAM).
 
 License: GPLv3.
 
