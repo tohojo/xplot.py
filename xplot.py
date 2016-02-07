@@ -115,24 +115,21 @@ def plot_xplot(filename):
         # Text above or to the right specifies coordinates with the string on
         # the next line
         elif parts[0] in ("atext","rtext","ltext"):
-            text = next(fp)
+            text = next(fp).strip()
             x,y = map(float, parts[1:3])
-            kwargs = {'ha': 'center', 'va':'center', 'color': COLOURS[col]}
+            kwargs = {'ha': 'center', 'va':'center', 'color': COLOURS[col],
+                      'textcoords':'offset points'}
+            theta=0
+            offset = (0,5)
             if len(parts) == 4 and parts[3] in COLOURS:
                 kwargs['color'] = COLOURS[parts[3]]
             if parts[0] == "rtext":
-                # We translate the 'rtext' to have the text be to the right
-                # instead of above. Values are simply arrived at by trial and
-                # error, and probably only aligns right with the single-digit
-                # annotations in time sequence graphs.
-                trans = Affine2D.identity().translate(6,-8)
-                kwargs['transform']=ax.transData+trans
                 kwargs['ha'] = 'left'
+                offset = (2,0)
             elif parts[0] == "ltext":
-                trans = Affine2D.identity().translate(-6,-8)
-                kwargs['transform']=ax.transData+trans
                 kwargs['ha'] = 'right'
-            t = ax.text(x,y,text,**kwargs)
+                offset = (-2,0)
+            t = ax.annotate(text,(x,y),offset,**kwargs)
 
         # Markers are specified as 'marker x y'
         elif parts[0] in MARKERS.keys():
